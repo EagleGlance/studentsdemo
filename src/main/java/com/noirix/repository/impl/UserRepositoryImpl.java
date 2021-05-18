@@ -18,6 +18,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.noirix.repository.UserColumn.BIRTH_DATE;
+import static com.noirix.repository.UserColumn.ID;
+import static com.noirix.repository.UserColumn.LOGIN;
+import static com.noirix.repository.UserColumn.NAME;
+import static com.noirix.repository.UserColumn.SURNAME;
+import static com.noirix.repository.UserColumn.WEIGHT;
+
 //@Component
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -30,14 +37,6 @@ public class UserRepositoryImpl implements UserRepository {
     private DatabaseProperties properties;
     // = getAnnotationSpringContext().getBean(DatabaseProperties.class); - will work with @Autowired
     // = getAnnotationSpringContext().getBean("databaseProperties", DatabaseProperties.class); - will work with @Autowired + @Qualifier
-
-
-    public static final String ID = "id";
-    public static final String NAME = "name";
-    public static final String SURNAME = "surname";
-    public static final String BIRTH_DATE = "birth_date";
-    public static final String LOGIN = "login";
-    public static final String WEIGHT = "weight";
 
     @Override
     public List<User> findAll() {
