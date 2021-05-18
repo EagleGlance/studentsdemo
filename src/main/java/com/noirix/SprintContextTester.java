@@ -3,6 +3,7 @@ package com.noirix;
 import com.noirix.domain.User;
 import com.noirix.repository.UserRepository;
 import com.noirix.util.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class SprintContextTester {
@@ -15,6 +16,9 @@ public class SprintContextTester {
 //        User user2 = (User) xmlContext.getBean("user2");
 //        System.out.println(user1);
 //        System.out.println(user2);
+
+        Logger log = Logger.getLogger(SprintContextTester.class);
+        log.info("I am working!");
 
         AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("com.noirix");
 
