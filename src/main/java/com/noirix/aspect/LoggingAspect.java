@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 @Component
 @Aspect
@@ -30,8 +31,11 @@ public class LoggingAspect {
     @Around("aroundRepositoryPointcut()")
     public Object logAroundMethods(ProceedingJoinPoint joinPoint) throws Throwable {
         log.info("Method " + joinPoint.getSignature().getName() + " start");
+        StopWatch timer = new StopWatch();
+        timer.start();
         Object proceed = joinPoint.proceed();
-        log.info("Method " + joinPoint.getSignature().getName() + " finished");
+        timer.stop();
+        log.info("Method " + joinPoint.getSignature().getName() + " finished with time " + timer.getTotalTimeMillis() + " ms");
         return proceed;
     }
 }

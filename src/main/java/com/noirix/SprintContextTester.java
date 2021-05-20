@@ -2,8 +2,11 @@ package com.noirix;
 
 import com.noirix.domain.User;
 import com.noirix.repository.UserRepository;
+import com.noirix.util.UserGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.util.List;
 
 public class SprintContextTester {
     public static void main(String[] args) {
@@ -27,16 +30,23 @@ public class SprintContextTester {
 //
         UserRepository userRepository = annotationConfigApplicationContext.getBean(UserRepository.class);
 
-        for (User user : userRepository.findAll()) {
-            System.out.println(user);
-        }
+//        userRepository.findAll();
+//        userRepository.findAll();
+//        userRepository.findAll();
+//        userRepository.findAll();
+//        userRepository.findAll();
 
-//        UserGenerator userGenerator = annotationConfigApplicationContext.getBean(UserGenerator.class);
-//
-//        List<User> generatedUsers = userGenerator.generate(100);
-//
-//        //TODO: check speed of executing
-//        userRepository.batchInsert(generatedUsers);
-//        userRepository.save(generatedUsers);
+//        for (User user : all) {
+//            System.out.println(user);
+//        }
+
+        UserGenerator userGenerator = annotationConfigApplicationContext.getBean(UserGenerator.class);
+
+        List<User> generatedUsers = userGenerator.generate(100000);
+        List<User> generatedUsers1 = userGenerator.generate(100000);
+
+        //TODO: check speed of executing
+        userRepository.save(generatedUsers1);
+        userRepository.batchInsert(generatedUsers);
     }
 }
