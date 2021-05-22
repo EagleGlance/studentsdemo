@@ -1,5 +1,6 @@
 package com.noirix.controller.mvc;
 
+import com.noirix.beans.SecurityConfig;
 import com.noirix.controller.requests.UserCreateRequest;
 import com.noirix.domain.User;
 import com.noirix.repository.UserRepository;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,14 +24,18 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final UserGenerator userGenerator;
+    private final SecurityConfig config;
 
     //GET + /hello
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public ModelAndView helloHandler() {
+    public ModelAndView helloHandler(HttpServletRequest request) {
 
-        List<User> users = userRepository.findAll();
-
-        return new ModelAndView("bye", Collections.singletonMap("users", users));
+        if (request.getHeader("Secret-Key").equals(config.getSecretKey())) {
+            List<User> users = userRepository.findAll();
+            return new ModelAndView("bye", Collections.singletonMap("users", users));
+        } else {
+            return new ModelAndView("error", Collections.emptyMap());
+        }
     }
 
     //GET + /search?limit=100&query=a
