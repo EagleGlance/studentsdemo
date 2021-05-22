@@ -6,6 +6,7 @@ import com.noirix.domain.User;
 import com.noirix.repository.UserRepository;
 import com.noirix.util.UserGenerator;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,9 @@ public class UserController {
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public ModelAndView helloHandler(HttpServletRequest request) {
 
-        if (request.getHeader("Secret-Key").equals(config.getSecretKey())) {
+        String secretKey = request.getHeader("Secret-Key");
+
+        if (StringUtils.isNotBlank(secretKey) && secretKey.equals(config.getSecretKey())) {
             List<User> users = userRepository.findAll();
             return new ModelAndView("bye", Collections.singletonMap("users", users));
         } else {
