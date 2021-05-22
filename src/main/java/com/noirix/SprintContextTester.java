@@ -42,8 +42,8 @@ public class SprintContextTester {
 
         UserGenerator userGenerator = annotationConfigApplicationContext.getBean(UserGenerator.class);
 
-        List<User> generatedUsers = userGenerator.generate(100000);
-        List<User> generatedUsers1 = userGenerator.generate(100000);
+        List<User> generatedUsers = userGenerator.generate(10);
+        List<User> generatedUsers1 = userGenerator.generate(10);
 
         //TODO: check speed of executing
         userRepository.save(generatedUsers1);
