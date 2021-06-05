@@ -20,29 +20,4 @@ public class ApplicationBeans {
     public StringUtils getStringUtils() {
         return new StringUtils();
     }
-
-    @Bean
-    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
-        //select * from users where user id = ?
-    }
-
-    @Bean
-    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource) {
-        return new NamedParameterJdbcTemplate(dataSource);
-        // select * from users where user id = :userId
-    }
-
-    @Bean
-    public DataSource hikariDataSource(DatabaseProperties databaseProperties) {
-        HikariDataSource hikariDataSource = new HikariDataSource();
-
-        hikariDataSource.setJdbcUrl(databaseProperties.getUrl());
-        hikariDataSource.setUsername(databaseProperties.getLogin());
-        hikariDataSource.setPassword(databaseProperties.getPassword());
-        hikariDataSource.setDriverClassName(databaseProperties.getDriver());
-        hikariDataSource.setMaximumPoolSize(10);
-
-        return hikariDataSource;
-    }
 }
