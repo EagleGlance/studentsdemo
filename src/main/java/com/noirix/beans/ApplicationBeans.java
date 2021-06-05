@@ -13,8 +13,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableAspectJAutoProxy(proxyTargetClass = true)
-@EnableWebMvc
 public class ApplicationBeans {
 
     @Bean
@@ -42,7 +40,7 @@ public class ApplicationBeans {
         hikariDataSource.setJdbcUrl(databaseProperties.getUrl());
         hikariDataSource.setUsername(databaseProperties.getLogin());
         hikariDataSource.setPassword(databaseProperties.getPassword());
-        hikariDataSource.setDriverClassName(databaseProperties.getDriverName());
+        hikariDataSource.setDriverClassName(databaseProperties.getDriver());
         hikariDataSource.setMaximumPoolSize(10);
 
         return hikariDataSource;

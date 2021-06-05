@@ -49,7 +49,7 @@ public class UserRepositoryImpl implements UserRepository {
         ResultSet rs;
 
         try {
-            Class.forName(properties.getDriverName());
+            Class.forName(properties.getDriver());
         } catch (ClassNotFoundException e) {
             System.err.println("JDBC Driver Cannot be loaded!");
             throw new RuntimeException("JDBC Driver Cannot be loaded!");
@@ -93,7 +93,7 @@ public class UserRepositoryImpl implements UserRepository {
         ResultSet rs;
 
         try {
-            Class.forName(properties.getDriverName());
+            Class.forName(properties.getDriver());
         } catch (ClassNotFoundException e) {
             System.err.println("JDBC Driver Cannot be loaded!");
             throw new RuntimeException("JDBC Driver Cannot be loaded!");
@@ -137,7 +137,7 @@ public class UserRepositoryImpl implements UserRepository {
         PreparedStatement statement;
 
         try {
-            Class.forName(properties.getDriverName());
+            Class.forName(properties.getDriver());
         } catch (ClassNotFoundException e) {
             System.err.println("JDBC Driver Cannot be loaded!");
             throw new RuntimeException("JDBC Driver Cannot be loaded!");
@@ -200,7 +200,7 @@ public class UserRepositoryImpl implements UserRepository {
         ResultSet rs;
 
         try {
-            Class.forName(properties.getDriverName());
+            Class.forName(properties.getDriver());
         } catch (ClassNotFoundException e) {
             System.err.println("JDBC Driver Cannot be loaded!");
             throw new RuntimeException("JDBC Driver Cannot be loaded!");
