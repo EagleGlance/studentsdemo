@@ -8,6 +8,7 @@ import com.noirix.util.UserGenerator;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,7 @@ public class UserController {
     private final SecurityConfig config;
 
     //GET + /hello
-    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    @GetMapping(value = "/hello")
     public ModelAndView helloHandler(HttpServletRequest request) {
 
         String secretKey = request.getHeader("Secret-Key");
