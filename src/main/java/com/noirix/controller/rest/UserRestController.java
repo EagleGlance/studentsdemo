@@ -8,12 +8,14 @@ import com.noirix.util.UserGenerator;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +27,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/rest/users")
 @RequiredArgsConstructor
+//@ApiResponses(value = {
+//        @ApiResponse(code = 200, message = "Request was successfully performed!"),
+//        @ApiResponse(code = 500, message = "Internal server error! https://stackoverflow.com/questions/37405244/how-to-change-the-response-status-code-for-successful-operation-in-swagger")
+//})
 public class UserRestController {
 
     private final UserRepository userRepository;
@@ -54,16 +60,23 @@ public class UserRestController {
         }
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "limit", dataType = "string", paramType = "query", value = "Limit users in result list"),
+            @ApiImplicitParam(name = "query", dataType = "string", paramType = "query", value = "Search query"),
+    })
     @GetMapping("/search")
     public List<User> userSearch(@RequestParam Integer limit, @RequestParam String query) {
         return userRepository.findUsersByQuery(limit, query);
     }
 
+    @ApiOperation(value = "Creating one user")
     @PostMapping
-    public User createUser(@ModelAttribute UserCreateRequest createRequest) {
+    public User createUser(@RequestBody UserCreateRequest createRequest) {
         User generatedUser = userGenerator.generate();
         generatedUser.setWeight(createRequest.getWeight());
         generatedUser.setLogin(createRequest.getLogin());
+        generatedUser.setName(createRequest.getName());
+        generatedUser.setSurname(createRequest.getSurname());
 
         return userRepository.save(generatedUser);
     }
@@ -72,6 +85,10 @@ public class UserRestController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "usersCount", dataType = "string", paramType = "path",
                     value = "Count of generated users", required = true, defaultValue = "100")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Users was successfully created!"),
+            @ApiResponse(code = 500, message = "Internal server error! https://stackoverflow.com/questions/37405244/how-to-change-the-response-status-code-for-successful-operation-in-swagger")
     })
     @PostMapping("/generate/{usersCount}")
     public List<User> generateUsers(@PathVariable("usersCount") Integer count) {
