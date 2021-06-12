@@ -189,4 +189,14 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
         return namedParameterJdbcTemplate.queryForObject(searchQuery, params, this::getUserRowMapper);
     }
+
+    @Override
+    public User findByLogin(String login) {
+        final String searchQuery = "select * from users where login = :login";
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("login", login);
+
+        return namedParameterJdbcTemplate.queryForObject(searchQuery, params, this::getUserRowMapper);
+    }
 }
