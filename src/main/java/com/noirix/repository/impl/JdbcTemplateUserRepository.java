@@ -1,5 +1,6 @@
 package com.noirix.repository.impl;
 
+import com.noirix.domain.Role;
 import com.noirix.domain.User;
 import com.noirix.repository.UserColumn;
 import com.noirix.repository.UserRepository;
@@ -50,6 +51,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
         user.setBirthDate(rs.getDate(UserColumn.BIRTH_DATE));
         user.setLogin(rs.getString(UserColumn.LOGIN));
         user.setWeight(rs.getFloat(UserColumn.WEIGHT));
+        user.setPassword(rs.getString(UserColumn.PASSWORD));
         return user;
     }
 
@@ -59,11 +61,10 @@ public class JdbcTemplateUserRepository implements UserRepository {
         //return jdbcTemplate.queryForObject(findOneWithWildcard, new Object[]{id}, this::getUserRowMapper);
         //return jdbcTemplate.queryForObject(findOneWithWildcard, this::getUserRowMapper, id);
 
-        final String findOneWithNameParam = "select * from users where id = :blablabla and id = :qweqwe";
+        final String findOneWithNameParam = "select * from users where id = :id";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("blablabla", id);
-        params.addValue("qweqwe", id);
+        params.addValue("id", id);
 
         return namedParameterJdbcTemplate.queryForObject(findOneWithNameParam, params, this::getUserRowMapper);
     }
@@ -86,8 +87,8 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public void addOne(User entity) {
-        final String createQuery = "insert into users (name, surname, birth_date, login, weight) " +
-                "values (:name, :surname, :birthDate, :login, :weight);";
+        final String createQuery = "insert into users (name, surname, birth_date, login, weight, password) " +
+                "values (:name, :surname, :birthDate, :login, :weight, :password);";
 
         MapSqlParameterSource params = generateUserParamsMap(entity);
         namedParameterJdbcTemplate.update(createQuery, params);
@@ -107,6 +108,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
         params.addValue("birthDate", entity.getBirthDate());
         params.addValue("login", entity.getLogin());
         params.addValue("weight", entity.getWeight());
+        params.addValue("password", entity.getPassword());
 
         return params;
     }
@@ -145,8 +147,8 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public void batchInsert(List<User> users) {
-        final String createQuery = "insert into users (name, surname, birth_date, login, weight) " +
-                "values (:name, :surname, :birthDate, :login, :weight);";
+        final String createQuery = "insert into users (name, surname, birth_date, login, weight, password) " +
+                "values (:name, :surname, :birthDate, :login, :weight, :password);";
 
         List<MapSqlParameterSource> batchParams = new ArrayList<>();
 
@@ -156,5 +158,35 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
         namedParameterJdbcTemplate.batchUpdate(createQuery, batchParams.toArray(new MapSqlParameterSource[0]));
 
+    }
+
+    @Override
+    public void saveUserRoles(User user, List<Role> userRoles) {
+        final String createQuery = "insert into user_roles (role_id, user_id) " +
+                "values (:roleId, :userId);";
+
+        List<MapSqlParameterSource> batchParams = new ArrayList<>();
+
+        for (Role role : userRoles) {
+
+            MapSqlParameterSource params = new MapSqlParameterSource();
+            params.addValue("roleId", role.getId());
+            params.addValue("userId", user.getId());
+
+            batchParams.add(params);
+        }
+
+        namedParameterJdbcTemplate.batchUpdate(createQuery, batchParams.toArray(new MapSqlParameterSource[0]));
+    }
+
+    @Override
+    public User findByLoginAndPassword(String login, String password) {
+        final String searchQuery = "select * from users where login = :login and password = :password";
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("password", password);
+        params.addValue("login", login);
+
+        return namedParameterJdbcTemplate.queryForObject(searchQuery, params, this::getUserRowMapper);
     }
 }

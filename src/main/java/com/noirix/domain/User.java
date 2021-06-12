@@ -26,6 +26,8 @@ public class User {
 
     private Float weight;
 
+    private String password;
+
     public User(Long id, String name, String surname) {
         this.id = id;
         this.name = name;

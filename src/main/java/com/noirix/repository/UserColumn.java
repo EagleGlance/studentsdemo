@@ -14,4 +14,6 @@ public interface UserColumn {
 
     String WEIGHT = "weight";
 
+    String PASSWORD = "password";
+
 }
