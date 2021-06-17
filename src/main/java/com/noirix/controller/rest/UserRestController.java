@@ -1,7 +1,6 @@
 package com.noirix.controller.rest;
 
 import com.noirix.beans.SecurityConfig;
-import com.noirix.controller.requests.UserCreateRequest;
 import com.noirix.domain.User;
 import com.noirix.repository.UserRepository;
 import com.noirix.util.PrincipalUtils;
@@ -16,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -78,18 +76,6 @@ public class UserRestController {
     @GetMapping("/search")
     public List<User> userSearch(@RequestParam Integer limit, @RequestParam String query) {
         return userRepository.findUsersByQuery(limit, query);
-    }
-
-    @ApiOperation(value = "Creating one user")
-    @PostMapping
-    public User createUser(@RequestBody UserCreateRequest createRequest) {
-        User generatedUser = userGenerator.generate();
-        generatedUser.setWeight(createRequest.getWeight());
-        generatedUser.setLogin(createRequest.getLogin());
-        generatedUser.setName(createRequest.getName());
-        generatedUser.setSurname(createRequest.getSurname());
-
-        return userRepository.save(generatedUser);
     }
 
     @ApiOperation(value = "Generate auto users in system")
