@@ -4,6 +4,7 @@ import com.noirix.beans.SecurityConfig;
 import com.noirix.controller.requests.UserCreateRequest;
 import com.noirix.domain.User;
 import com.noirix.repository.UserRepository;
+import com.noirix.util.PrincipalUtils;
 import com.noirix.util.UserGenerator;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -19,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,8 +37,12 @@ import java.util.List;
 public class UserRestController {
 
     private final UserRepository userRepository;
+
     private final UserGenerator userGenerator;
+
     private final SecurityConfig config;
+
+    private final PrincipalUtils principalUtils;
 
     @GetMapping
     public List<User> findAll() {
@@ -46,14 +53,18 @@ public class UserRestController {
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Secret-Key", dataType = "string", paramType = "header",
-                    value = "Secret header for secret functionality!! Hoho")
+                    value = "Secret header for secret functionality!! Hoho"),
+            @ApiImplicitParam(name = "X-Auth-Token", value = "token", required = true, dataType = "string", paramType = "header")
     })
     @GetMapping("/hello")
-    public List<User> securedFindAll(HttpServletRequest request) {
+    public List<User> securedFindAll(HttpServletRequest request,
+                                     @ApiIgnore Principal principal) {
+
+        String username = principalUtils.getUsername(principal);
         String secretKey = request.getHeader("Secret-Key");
 
         if (StringUtils.isNotBlank(secretKey) && secretKey.equals(config.getSecretKey())) {
-            return userRepository.findAll();
+            return Collections.singletonList(userRepository.findByLogin(username));
         } else {
             //throw new UnauthorizedException();
             return Collections.emptyList();

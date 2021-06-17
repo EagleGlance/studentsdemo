@@ -4,7 +4,6 @@ import com.noirix.beans.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.TextCodec;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -73,7 +72,7 @@ public class TokenUtils {
                 .builder()
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate())
-                .signWith(SignatureAlgorithm.HS512, TextCodec.BASE64.encode(jwtTokenConfig.getSecret()))
+                .signWith(SignatureAlgorithm.HS512, jwtTokenConfig.getSecret())
                 .compact();
     }
 
