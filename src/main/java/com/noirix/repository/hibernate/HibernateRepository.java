@@ -1,7 +1,6 @@
-package com.noirix.repository.impl;
+package com.noirix.repository.hibernate;
 
 import com.noirix.domain.hibernate.HibernateUser;
-import com.noirix.repository.HibernateUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
