@@ -2,6 +2,7 @@ package com.noirix.domain.hibernate;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
@@ -18,6 +19,9 @@ import java.util.Set;
 @Table(name = "location")
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {
+        "dealers"
+})
 public class HibernateLocation {
 
     @Id
