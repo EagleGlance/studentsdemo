@@ -1,22 +1,32 @@
 package com.noirix.domain.hibernate;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.noirix.domain.Gender;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {
+        "roles"
+})
 public class HibernateUser {
 
     @Id
@@ -47,5 +57,9 @@ public class HibernateUser {
 
 //    @OneToMany
 //    private Set<HibernateCar> cars = new HashSet<>();
+
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("users")
+    private Set<HibernateRoles> roles = Collections.emptySet();
 
 }
