@@ -65,6 +65,6 @@ public class HibernateUser {
 
     @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("users")
-    private Set<HibernateRoles> roles = Collections.emptySet();
+    private Set<HibernateRole> roles = Collections.emptySet();
 
 }

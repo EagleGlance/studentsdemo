@@ -1,10 +1,11 @@
 package com.noirix.repository.hibernate;
 
-import com.noirix.domain.hibernate.HibernateRoles;
+import com.noirix.domain.hibernate.HibernateRole;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -26,19 +27,25 @@ public class RoleRepository implements HibernateRoleRepository {
     private EntityManager entityManager;
 
     @Override
-    public List<HibernateRoles> findAll() {
+    public List<HibernateRole> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return Collections.singletonList(session.find(HibernateRoles.class, 1L));
+            return Collections.singletonList(session.find(HibernateRole.class, 1L));
         }
     }
 
     @Override
-    public HibernateRoles findOne(Long id) {
-        return null;
+    public HibernateRole findOne(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+
+            Query<HibernateRole> query = session.createQuery("select r from HibernateRole r where r.id = :id", HibernateRole.class);
+            query.setParameter("id", id);
+
+            return query.getSingleResult();
+        }
     }
 
     @Override
-    public HibernateRoles save(HibernateRoles entity) {
+    public HibernateRole save(HibernateRole entity) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.getTransaction();
             transaction.begin();
@@ -55,17 +62,17 @@ public class RoleRepository implements HibernateRoleRepository {
     }
 
     @Override
-    public void addOne(HibernateRoles entity) {
+    public void addOne(HibernateRole entity) {
 
     }
 
     @Override
-    public void save(List<HibernateRoles> entities) {
+    public void save(List<HibernateRole> entities) {
 
     }
 
     @Override
-    public HibernateRoles update(HibernateRoles entity) {
+    public HibernateRole update(HibernateRole entity) {
         return null;
     }
 
