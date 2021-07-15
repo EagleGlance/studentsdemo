@@ -109,6 +109,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
         params.addValue("login", entity.getLogin());
         params.addValue("weight", entity.getWeight());
         params.addValue("password", entity.getPassword());
+        params.addValue("gender", entity.getGender());
 
         return params;
     }
@@ -147,8 +148,8 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public void batchInsert(List<User> users) {
-        final String createQuery = "insert into users (name, surname, birth_date, login, weight, password) " +
-                "values (:name, :surname, :birthDate, :login, :weight, :password);";
+        final String createQuery = "insert into users (name, surname, birth_date, login, weight, password, gender) " +
+                "values (:name, :surname, :birthDate, :login, :weight, :password, :gender);";
 
         List<MapSqlParameterSource> batchParams = new ArrayList<>();
 
