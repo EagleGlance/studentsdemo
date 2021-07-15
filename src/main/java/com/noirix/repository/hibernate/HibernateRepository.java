@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -36,7 +37,9 @@ public class HibernateRepository implements HibernateUserRepository {
     @Override
     public List<HibernateUser> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return Collections.singletonList(session.find(HibernateUser.class, 262624L));
+            Query<HibernateUser> query = session.createNamedQuery("HibernateUser_findWithIdRestriction", HibernateUser.class);
+            query.setParameter("id", 98L);
+            return query.getResultList();
         }
     }
 
