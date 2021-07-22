@@ -33,7 +33,7 @@ import java.util.Set;
         "roles", "car"
 })
 @NamedQuery(name = "HibernateUser_findWithIdRestriction",
-        query = "select h from HibernateUser  h where h.id > :id")
+        query = "select h from HibernateUser h where h.id > :id")
 public class HibernateUser {
 
     @Id
