@@ -30,7 +30,6 @@ import java.util.Set;
 @Table(name = "users")
 @Data
 @NoArgsConstructor
-@Cacheable("users")
 @EqualsAndHashCode(exclude = {
         "roles", "car"
 })
