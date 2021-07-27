@@ -22,7 +22,7 @@ public interface UserDataRepository extends CrudRepository<HibernateUser, Long>,
 
     List<HibernateUser> findByIdIn(List<Long> ids);
 
-    Optional<HibernateUser> findByNameAndLogin(String name, String login);
+    Optional<HibernateUser> findByName(String name);
 
     @Cacheable("users")
     @Query(value = "select u from HibernateUser u where u.id > :userID")

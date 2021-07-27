@@ -10,8 +10,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NamedQuery;
 import org.springframework.cache.annotation.Cacheable;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -55,13 +58,14 @@ public class HibernateUser {
     private Gender gender = Gender.NOT_SELECTED;
 
     @Column
-    private String login;
-
-    @Column
     private Float weight;
 
-    @Column
-    private String password;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "login", column = @Column(name = "login")),
+            @AttributeOverride(name = "password", column = @Column(name = "password"))
+    })
+    private HibernateUserCredentials credentials;
 
     @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
