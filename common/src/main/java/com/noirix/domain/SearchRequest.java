@@ -1,4 +1,4 @@
-package com.noirix.controller.requests;
+package com.noirix.domain;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;

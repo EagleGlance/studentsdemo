@@ -1,6 +1,6 @@
 package com.noirix.controller.rest;
 
-import com.noirix.controller.requests.SearchRequest;
+import com.noirix.domain.SearchRequest;
 import com.noirix.domain.hibernate.HibernateUser;
 import com.noirix.repository.hibernate.HibernateUserRepository;
 import lombok.RequiredArgsConstructor;
