@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    include: default
+  datasource:
+    hikari:
+      jdbc-url: "jdbc:postgresql://localhost:5432/student_demo"
+      maximum-pool-size: 10
+    username: postgres
+    password: root
+    url: "jdbc:postgresql://localhost:5432/student_demo"
+
+jwtconfig:
+  secret: secret
+  expiration: 600
